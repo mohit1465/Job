@@ -15,8 +15,10 @@ const locationInput = document.getElementById('locationInput');
 const workTypeSelect = document.getElementById('workTypeSelect');
 const datePostedSelect = document.getElementById('datePostedSelect');
 const expLevelSelect = document.getElementById('expLevelSelect');
+const jobTypeSelect = document.getElementById('jobTypeSelect');
 const sortSelect = document.getElementById('sortSelect');
-const liveFilterInput = document.getElementById('liveFilterInput');
+const easyApplyCheckbox = document.getElementById('easyApplyCheckbox');
+const under10Checkbox = document.getElementById('under10Checkbox');
 
 const jobsContainer = document.getElementById('jobsContainer');
 const resultsCount = document.getElementById('resultsCount');
@@ -52,7 +54,10 @@ async function fetchJobs() {
     const f_WT = workTypeSelect.value;
     const f_TPR = datePostedSelect.value;
     const f_E = expLevelSelect.value;
+    const f_JT = jobTypeSelect ? jobTypeSelect.value : '';
     const sortBy = sortSelect.value;
+    const f_AL = easyApplyCheckbox && easyApplyCheckbox.checked ? 'true' : '';
+    const f_JIYN = under10Checkbox && under10Checkbox.checked ? 'true' : '';
 
     renderLoading();
 
@@ -62,6 +67,9 @@ async function fetchJobs() {
     if (f_WT) queryParams.append('f_WT', f_WT);
     if (f_TPR) queryParams.append('f_TPR', f_TPR);
     if (f_E) queryParams.append('f_E', f_E);
+    if (f_JT) queryParams.append('f_JT', f_JT);
+    if (f_AL) queryParams.append('f_AL', 'true');
+    if (f_JIYN) queryParams.append('f_JIYN', 'true');
     if (sortBy) queryParams.append('sortBy', sortBy);
 
     try {

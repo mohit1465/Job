@@ -101,6 +101,17 @@
                 </div>
 
                 <div class="input-group">
+                    <i data-lucide="clock"></i>
+                    <select id="jobTypeSelect" class="input-control">
+                        <option value="">All Job Types</option>
+                        <option value="F">Full-time</option>
+                        <option value="P">Part-time</option>
+                        <option value="C">Contract</option>
+                        <option value="I">Internship</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
                     <i data-lucide="arrow-up-down"></i>
                     <select id="sortSelect" class="input-control">
                         <option value="">Sort: Most Relevant</option>
@@ -108,9 +119,13 @@
                     </select>
                 </div>
 
-                <div class="input-group" style="grid-column: span 2;">
-                    <i data-lucide="filter"></i>
-                    <input type="text" id="liveFilterInput" class="input-control" placeholder="Instant filter within loaded results (e.g. Noida, AWS, Python)...">
+                <div class="input-group" style="grid-column: span 2; display: flex; gap: 12px; align-items: center; justify-content: space-around; padding: 0 10px; background: rgba(15, 22, 36, 0.5); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                    <label style="font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        <input type="checkbox" id="easyApplyCheckbox" style="accent-color: var(--primary);"> ⚡ Easy Apply (`f_AL`)
+                    </label>
+                    <label style="font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        <input type="checkbox" id="under10Checkbox" style="accent-color: var(--accent-emerald);"> 🔥 &lt;10 Applicants (`f_JIYN`)
+                    </label>
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="height: 46px; grid-column: span 4;">

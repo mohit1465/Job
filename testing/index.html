@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless LinkedIn Job Search & Parser (Pure HTML/CSS/JS)</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-content">
+            <div class="brand">
+                <div class="brand-icon">JS</div>
+                <div>
+                    <h1>Serverless Job Parser</h1>
+                    <p>100% Client-Side HTML/CSS/JS (No Node Server)</p>
+                </div>
+            </div>
+
+            <div class="badge-status">
+                <span class="dot"></span> Client-Side Browser Engine
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="info-card">
+            <h2>⚡ Client-Side Fetch & Parse Test</h2>
+            <p>
+                This test runs <strong>directly in the browser</strong> using Vanilla JavaScript and <code>DOMParser</code>.
+                Because browsers enforce CORS when fetching external sites directly, we route through public CORS bridges (or parse pasted HTML markup instantly).
+            </p>
+        </section>
+
+        <!-- Search Form -->
+        <section class="search-card">
+            <div class="search-row">
+                <input type="text" id="keywordsInput" class="input-control" placeholder="Keywords (e.g. Data Science, React, Agentic AI)" value="Data Science">
+                <input type="text" id="locationInput" class="input-control" placeholder="Location (e.g. India, Remote)" value="India">
+                
+                <select id="proxySelect" class="input-control">
+                    <option value="corsproxy">Proxy: CorsProxy.io</option>
+                    <option value="allorigins">Proxy: AllOrigins.win</option>
+                    <option value="direct">Direct Fetch (May trigger CORS)</option>
+                </select>
+
+                <button id="btnFetch" class="btn btn-primary">
+                    <i data-lucide="sparkles"></i>
+                    <span>Fetch & Parse</span>
+                </button>
+            </div>
+
+            <!-- Alternative Raw HTML Input Box -->
+            <div class="paste-section">
+                <button class="toggle-paste-btn" id="togglePasteBtn">
+                    <i data-lucide="code"></i> Or Paste Raw LinkedIn HTML Snippet
+                </button>
+                
+                <div class="paste-box-container hidden" id="pasteContainer">
+                    <textarea id="rawPasteInput" placeholder="Paste unstyled HTML copied from https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search here..."></textarea>
+                    <button id="btnParsePasted" class="btn btn-secondary" style="margin-top: 8px;">
+                        Parse Pasted HTML
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Indicator -->
+        <section class="status-bar">
+            <span id="statusText">Ready to fetch...</span>
+            <span id="corsNotice" style="color: var(--accent-amber); font-size: 0.8rem;"></span>
+        </section>
+
+        <!-- Results Grid -->
+        <section id="jobsContainer" class="jobs-grid">
+            <!-- Parsed jobs rendered here -->
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

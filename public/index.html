@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Smart Job Finder Pro | Customized Search & Analytics</title>
+    <meta name="description" content="Customize, filter, and parse raw LinkedIn Guest API job search results into a clean, modern interactive web interface.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container nav-content">
+            <a href="#" class="brand">
+                <div class="brand-icon">in</div>
+                <div class="brand-text">
+                    <h1>Smart Job Finder <span class="badge-pro">API PRO</span></h1>
+                    <p>Enhanced Guest Job Postings Engine</p>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <button class="btn btn-secondary" id="btnInspectRaw">
+                    <i data-lucide="code"></i>
+                    <span>Inspect Raw API</span>
+                </button>
+                <button class="btn btn-secondary" id="btnSavedJobs">
+                    <i data-lucide="bookmark"></i>
+                    <span>Saved (<span id="savedCount">0</span>)</span>
+                </button>
+                <a href="https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search" target="_blank" class="btn btn-primary">
+                    <i data-lucide="external-link"></i>
+                    <span>Raw LinkedIn Endpoint</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Hero Title -->
+        <section class="hero-section">
+            <h2 class="hero-title">
+                Customized Job Search <span>Made Smarter</span>
+            </h2>
+            <p class="hero-subtitle">
+                Transform raw, unstyled LinkedIn Guest API postings into a powerful, filtered, high-density career dashboard with real-time matching.
+            </p>
+        </section>
+
+        <!-- Search & Advanced Filters Panel -->
+        <section class="search-card">
+            <form id="searchForm" class="search-form">
+                <!-- Row 1: Keyword & Location -->
+                <div class="input-group">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="keywordsInput" class="input-control" placeholder="Job title, skill, or keyword (e.g. Agentic AI, React)" value="Data Science">
+                </div>
+
+                <div class="input-group">
+                    <i data-lucide="map-pin"></i>
+                    <input type="text" id="locationInput" class="input-control" placeholder="City, state or 'Remote' (e.g. India)" value="India">
+                </div>
+
+                <!-- Row 1 Filters: Work Type & Date Posted -->
+                <div class="input-group">
+                    <i data-lucide="briefcase"></i>
+                    <select id="workTypeSelect" class="input-control">
+                        <option value="">All Workplace Types</option>
+                        <option value="2">🌐 Remote Only</option>
+                        <option value="3">🏢 Hybrid</option>
+                        <option value="1">📍 On-site</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <i data-lucide="calendar"></i>
+                    <select id="datePostedSelect" class="input-control">
+                        <option value="">Any Time</option>
+                        <option value="r86400">Past 24 Hours</option>
+                        <option value="r604800">Past Week</option>
+                        <option value="r2592000">Past Month</option>
+                    </select>
+                </div>
+
+                <!-- Row 2 Filters: Experience Level, Sort, & Instant Filter -->
+                <div class="input-group">
+                    <i data-lucide="award"></i>
+                    <select id="expLevelSelect" class="input-control">
+                        <option value="">Any Experience Level</option>
+                        <option value="1">Internship</option>
+                        <option value="2">Entry Level</option>
+                        <option value="3">Associate</option>
+                        <option value="4">Mid-Senior Level</option>
+                        <option value="5">Director / Executive</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <i data-lucide="arrow-up-down"></i>
+                    <select id="sortSelect" class="input-control">
+                        <option value="">Sort: Most Relevant</option>
+                        <option value="DD">Sort: Most Recent</option>
+                    </select>
+                </div>
+
+                <div class="input-group" style="grid-column: span 2;">
+                    <i data-lucide="filter"></i>
+                    <input type="text" id="liveFilterInput" class="input-control" placeholder="Instant filter within loaded results (e.g. Noida, AWS, Python)...">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="height: 46px; grid-column: span 4;">
+                    <i data-lucide="sparkles"></i>
+                    <span>Apply API Filters & Search</span>
+                </button>
+            </form>
+
+            <!-- Quick Preset Chips -->
+            <div class="quick-chips">
+                <span class="chip-label">Popular Queries:</span>
+                <button class="chip active" data-kw="Agentic AI">🤖 Agentic AI</button>
+                <button class="chip" data-kw="Data Science">📊 Data Science</button>
+                <button class="chip" data-kw="AWS Cloud">☁️ AWS Cloud</button>
+                <button class="chip" data-kw="Full Stack">⚡ Full Stack</button>
+                <button class="chip" data-kw="Remote Developer">🌐 Remote Dev</button>
+                <span style="margin: 0 8px; color: var(--border-color);">|</span>
+                <span class="chip-label">Badge Filters:</span>
+                <button class="chip" id="filterBadgeHiring">🔥 Actively Hiring</button>
+                <button class="chip" id="filterBadgeEarly">⚡ Early Applicant</button>
+            </div>
+        </section>
+
+        <!-- Status & View Bar -->
+        <section class="status-bar">
+            <div class="status-left">
+                <span class="pulse-dot"></span>
+                <span id="resultsCount">Loading jobs...</span>
+                <span style="color: var(--text-dim);">|</span>
+                <span id="dataSourceBadge" style="color: var(--accent-cyan); font-size: 0.8rem;">Parsed via Express Proxy API</span>
+            </div>
+
+            <div class="view-controls">
+                <button class="icon-btn active" id="btnGridView" title="Grid View">
+                    <i data-lucide="layout-grid"></i>
+                </button>
+                <button class="icon-btn" id="btnListView" title="List View">
+                    <i data-lucide="list"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Job Postings Container -->
+        <section id="jobsContainer" class="jobs-grid">
+            <!-- Dynamically Rendered Job Cards -->
+        </section>
+
+    </main>
+
+    <!-- Raw HTML / API Inspector Modal -->
+    <div class="modal-overlay" id="rawModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">LinkedIn API Endpoint Comparison</h3>
+                <button class="modal-close" id="closeRawModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+                    <strong>Raw Unstyled HTML Output from LinkedIn API:</strong>
+                </p>
+                <pre class="code-block" id="rawCodeSnippet">Loading raw API payload...</pre>
+                
+                <p style="color: var(--text-muted); margin-top: 1.5rem; font-size: 0.9rem;">
+                    <strong>How our app customizes & parses this:</strong><br>
+                    Our backend proxy fetches the raw markup, extracts structured JSON fields (Title, Company, Location, Date, Status Badges), applies custom filtering parameters, and renders this intuitive interactive Web Application.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Detail Inspector Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" id="detailModalTitle">Job Title Details</h3>
+                <button class="modal-close" id="closeDetailModal">&times;</button>
+            </div>
+            <div class="modal-body" id="detailModalBody">
+                <!-- Detailed content populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>LinkedIn Guest Job API Dashboard & Parsing Engine &bull; Built with Express, Cheerio & HTML/CSS/JS</p>
+        </div>
+    </footer>
+
+    <!-- App Logic Script -->
+    <script src="app.js"></script>
+    <script>
+        // Initialize icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

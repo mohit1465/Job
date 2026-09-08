@@ -112,16 +112,12 @@ function buildLinkedInUrl(params) {
 
     if (params.keywords) queryParams.append('keywords', params.keywords);
     if (params.location) queryParams.append('location', params.location);
-    if (params.geoId) queryParams.append('geoId', params.geoId);
     if (params.start) queryParams.append('start', params.start);
 
-    // Advanced Filter Parameters
-    if (params.f_TPR) queryParams.append('f_TPR', params.f_TPR); // Date posted
-    if (params.f_WT) queryParams.append('f_WT', params.f_WT);   // Work type
-    if (params.f_E) queryParams.append('f_E', params.f_E);     // Experience Level
-    if (params.f_JT) queryParams.append('f_JT', params.f_JT);   // Job Type (F, P, C, T, I)
-    if (params.f_AL === 'true') queryParams.append('f_AL', 'true'); // Easy Apply
-    if (params.f_JIYN === 'true') queryParams.append('f_JIYN', 'true'); // <10 Applicants
+    // Filter Parameters
+    if (params.f_TPR) queryParams.append('f_TPR', params.f_TPR); // Date posted: r86400 (24h), r604800 (1wk), r2592000 (1mo)
+    if (params.f_WT) queryParams.append('f_WT', params.f_WT);   // Work type (1: On-site, 2: Remote, 3: Hybrid)
+    if (params.f_E) queryParams.append('f_E', params.f_E);     // Experience Level (1: Intern, 2: Entry, 3: Associate, 4: Mid-Senior, 5: Director, 6: Exec)
     if (params.sortBy) queryParams.append('sortBy', params.sortBy); // DD: Most Recent
 
     return `${baseUrl}?${queryParams.toString()}`;

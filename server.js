@@ -127,9 +127,10 @@ function buildLinkedInUrl(params) {
 function parseLinkedInHtml(html, reqQuery) {
     const $ = cheerio.load(html);
     const jobs = [];
+    const seenKeys = new Set();
 
-    // Parse each job posting card from LinkedIn Guest API HTML
-    const cards = $('li, div.job-search-card, div.base-search-card, .base-card');
+    // Select unique job card containers
+    const cards = $('div.base-card, div.job-search-card, div.base-search-card, li:has(h3)');
 
     cards.each((index, element) => {
         const card = $(element);
@@ -144,6 +145,11 @@ function parseLinkedInHtml(html, reqQuery) {
         
         // Find location
         const location = card.find('.job-search-card__location, .base-search-card__metadata span').first().text().trim() || 'Not specified';
+
+        // Prevent duplicate cards caused by nested HTML tags (li > div.base-card)
+        const uniqueKey = `${title.toLowerCase().trim()}|${company.toLowerCase().trim()}|${location.toLowerCase().trim()}`;
+        if (seenKeys.has(uniqueKey)) return;
+        seenKeys.add(uniqueKey);
         
         // Find posted time
         const timeElem = card.find('time, .job-search-card__listdate').first();
